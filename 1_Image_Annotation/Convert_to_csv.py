@@ -32,23 +32,24 @@ def txt2csv(location):
         # Create data for each labels
         for index, row in df_txt.iterrows():
             # Temp array for csv, initialized by the training types
-            file_name_txt = file_whole_name.split('/')[1]
+            file_name_txt = file_whole_name.split('/')[-1]
             file_name = file_name_txt.split('.')[0]
+            file_name = file_name + '.JPG'
             temp_csv = [file_name]
 
             # Add the upper left coordinate
 
-            x_min = min(max(0.0, row[1] - row[3] / 2), 1.0)
-            y_min = min(max(0.0, row[2] - row[4] / 2), 1.0)
-            temp_csv.extend([x_min, y_min])
+            xmin = min(max(0.0, row[1] - row[3] / 2), 1.0)
+            ymin = min(max(0.0, row[2] - row[4] / 2), 1.0)
+            temp_csv.extend([xmin, ymin])
 
             # Add the lower left coordinate (not necessary, left blank)
             #temp_csv.extend(["", ""])
 
             # Add the lower right coordinate
-            x_max = min(max(0.0, row[1] + row[3] / 2), 1.0)
-            y_max = min(max(0.0, row[2] + row[4] / 2), 1.0)
-            temp_csv.extend([x_max, y_max])
+            xmax = min(max(0.0, row[1] + row[3] / 2), 1.0)
+            ymax = min(max(0.0, row[2] + row[4] / 2), 1.0)
+            temp_csv.extend([xmax, ymax])
 
             # Add the upper right coordinate (not necessary, left blank)
             #temp_csv.extend(["", ""])
@@ -90,8 +91,8 @@ if __name__ == "__main__":
     res.extend(txt2csv(training_folder))
     res_csv = pd.DataFrame(res,
                            columns=["image",
-                                    "x_min", "y_min",
-                                    "x_max", "y_max",
+                                    "xmin", "ymin",
+                                    "xmax", "ymax",
                                     "label"])
 
     res_csv.to_csv("training_data.csv", index=False, header=True)
